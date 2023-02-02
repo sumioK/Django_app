@@ -8,23 +8,9 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous"/>
 </head>
 <body class="container">
-  <h1 class="display-4 text-primary">{{title}}</h1>
-  <!-- <p class="h5 mt-4">{{data}}</p> -->
-  <!-- <form action="{% url 'index' %}" method="post">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="click">
-  </form> 
-  <hr> --->
+  <h1 class="display-4 text-primary">{{ title }}</h1>
   <table class="table">
-    <tr>
-      <th>data</th>
-    </tr>
-    {% for item in data %}
-    <tr>
-      <td>{{item}}</td>
-    </tr>
-    {% endfor %}
+    {{ data|safe}}
   </table>
 </body>
 </html>

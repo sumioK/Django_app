@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Friend
-from .forms import HelloForm
+from django.db.models import QuerySet
 
 # def index(request):
 #   params = {
@@ -18,13 +18,22 @@ from .forms import HelloForm
 #   else:
 #     params['data'] = Friend.objects.all()
 #   return render(request, 'hello/index.html', params)
+
+def __new_str__(self):
+  result = ''
+  for item in self:
+    result += '<tr>'
+    for k in item:
+      result += '<td>' +str(k) + '=' + str(item[k]) + '</td>'
+    result += '</tr>'
+  return result
+
+QuerySet.__str__ = __new_str__
+
 def index(request):
-  num = Friend.objects.all().count()
-  first = Friend.objects.all().first()
-  last = Friend.objects.all().last()
-  data = [num, first, last]
+  data = Friend.objects.all().values('id', 'name', 'age')
   params = {
     'title': 'Hello',
-    'data': data
+    'data': data,
   }
   return render(request, 'hello/index.html', params)
