@@ -16,6 +16,7 @@
     <tr>
       <td>{{ item }}</td>
       <td><a href="{% url 'edit' item.id %}">Edit</a></td>
+      <td><a href="{% url 'delete' item.id %}">Delete</a></td>
     </tr>
   {% endfor %}
   </table>
