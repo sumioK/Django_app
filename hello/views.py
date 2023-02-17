@@ -1,14 +1,25 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
-from django.db.models import Q
+from django.db.models import Q, Count, Sum, Avg, Min, Max 
 from .models import Friend
 from .forms import FriendForm, FindForm
 
 def index(request):
   data = Friend.objects.all()
+  re1 = Friend.objects.aggregate(Count('age'))
+  re2 = Friend.objects.aggregate(Sum('age'))
+  re3 = Friend.objects.aggregate(Avg('age'))
+  re4 = Friend.objects.aggregate(Min('age'))
+  re5 = Friend.objects.aggregate(Max('age'))
+  msg = 'count:' + str(re1['age__count']) \
+    + '<br> Sum:' + str(re2['age__sum']) \
+    + '<br>Average:' + str(re3['age__avg']) \
+    + '<br>Min:' + str(re4['age__min']) \
+    + '<br>Max:' + str(re5['age__max']) 
   params = {
     'title': 'Hello',
+    'message': msg,
     'data': data,
   }
   return render(request, 'hello/index.html', params)
@@ -62,7 +73,7 @@ def find(request):
     form = FindForm(request.POST)
     find = request.POST['find']
     list = find.split()
-    data = Friend.objects.filter(name__in=list)
+    data = Friend.objects.all()[int(list[0]):int(list[1])]
     msg = 'Result: ' + str(data.count())
   else:
     msg = 'serch words...'
