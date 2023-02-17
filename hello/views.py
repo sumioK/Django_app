@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
+from django.db.models import Q
 from .models import Friend
-from .forms import FriendForm
+from .forms import FriendForm, FindForm
 
 def index(request):
   data = Friend.objects.all()
@@ -55,3 +56,22 @@ class FriendList(ListView):
 
 class FriendDetail(DetailView):
   model = Friend
+
+def find(request):
+  if(request.method == 'POST'):
+    form = FindForm(request.POST)
+    find = request.POST['find']
+    list = find.split()
+    data = Friend.objects.filter(name__in=list)
+    msg = 'Result: ' + str(data.count())
+  else:
+    msg = 'serch words...'
+    form = FindForm()
+    data = Friend.objects.all()
+  params={
+    'title': 'Hello',
+    'message': msg,
+    'form': form,
+    'data': data,
+  }
+  return render(request, 'hello/find.html', params)
