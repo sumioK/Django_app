@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.views.generic import ListView, DetailView
 from .models import Friend
 from .forms import FriendForm
 
@@ -48,3 +49,9 @@ def delete(request, num):
     'obj': friend,
   }
   return render(request, 'hello/delete.html', params)
+
+class FriendList(ListView):
+  model = Friend
+
+class FriendDetail(DetailView):
+  model = Friend
