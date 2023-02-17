@@ -15,3 +15,8 @@ class FriendForm(forms.ModelForm):
 
 class FindForm(forms.Form):
   find = forms.CharField(label='Find', required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+
+class CheckForm(forms.Form):
+  required = forms.IntegerField(label='Required', widget=forms.NumberInput(attrs={'class':'form-control'}))
+  min = forms.IntegerField(label='Min', min_value=100, widget=forms.NumberInput(attrs={'class':'form-control'}))
+  mix = forms.IntegerField(label='Max', max_value=1000, widget=forms.NumberInput(attrs={'class':'form-control'}))

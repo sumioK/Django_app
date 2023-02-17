@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from django.db.models import Q, Count, Sum, Avg, Min, Max 
 from .models import Friend
-from .forms import FriendForm, FindForm
+from .forms import FriendForm, FindForm, CheckForm
 
 def index(request):
   data = Friend.objects.all()
@@ -13,7 +13,7 @@ def index(request):
   re4 = Friend.objects.aggregate(Min('age'))
   re5 = Friend.objects.aggregate(Max('age'))
   msg = 'count:' + str(re1['age__count']) \
-    + '<br> Sum:' + str(re2['age__sum']) \
+    + '<br>Sum:' + str(re2['age__sum']) \
     + '<br>Average:' + str(re3['age__avg']) \
     + '<br>Min:' + str(re4['age__min']) \
     + '<br>Max:' + str(re5['age__max']) 
@@ -86,3 +86,18 @@ def find(request):
     'data': data,
   }
   return render(request, 'hello/find.html', params)
+
+def check(request):
+  params = {
+    'title' : 'Hello',
+    'message' : 'check validation.',
+    'form': CheckForm(),
+  }
+  if request.method == 'POST':
+    form = CheckForm(request.POST)
+    params['form'] = form
+    if form.is_valid():
+      params['message'] = 'OK!'
+    else:
+      params['message'] = 'no good.'
+  return render(request, 'hello/check.html', params)
