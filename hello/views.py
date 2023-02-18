@@ -2,25 +2,17 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from django.db.models import Q, Count, Sum, Avg, Min, Max 
+from django.core.paginator import Paginator
 from .models import Friend
 from .forms import FriendForm, FindForm, CheckForm
 
-def index(request):
+def index(request, num=1):
   data = Friend.objects.all()
-  re1 = Friend.objects.aggregate(Count('age'))
-  re2 = Friend.objects.aggregate(Sum('age'))
-  re3 = Friend.objects.aggregate(Avg('age'))
-  re4 = Friend.objects.aggregate(Min('age'))
-  re5 = Friend.objects.aggregate(Max('age'))
-  msg = 'count:' + str(re1['age__count']) \
-    + '<br>Sum:' + str(re2['age__sum']) \
-    + '<br>Average:' + str(re3['age__avg']) \
-    + '<br>Min:' + str(re4['age__min']) \
-    + '<br>Max:' + str(re5['age__max']) 
+  page = Paginator(data, 3)
   params = {
-    'title': 'Hello',
-    'message': msg,
-    'data': data,
+    'title': 'hello',
+    'message': '',
+    'data': page.get_page(num)
   }
   return render(request, 'hello/index.html', params)
 
