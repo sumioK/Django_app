@@ -1,5 +1,5 @@
 from django import forms
-from.models import Friend
+from.models import Friend, Message
 
 class HelloForm(forms.Form):
   name = forms.CharField(label='Name', widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -26,3 +26,13 @@ class CheckForm(forms.Form):
   required = forms.IntegerField(label='Required', widget=forms.NumberInput(attrs={'class':'form-control'}))
   min = forms.IntegerField(label='Min', min_value=100, widget=forms.NumberInput(attrs={'class':'form-control'}))
   mix = forms.IntegerField(label='Max', max_value=1000, widget=forms.NumberInput(attrs={'class':'form-control'}))
+
+class MessageForm(forms.ModelForm):
+  class Meta:
+    model = Message
+    fields = ['title', 'content', 'friend']
+    widget = {
+      'title': forms.TextInput(attrs={'class':'form-control form-control-sm'}),
+      'content': forms.Textarea(attrs={'class':'form-control form-control-sm','rows':2}),
+      'friend' : forms.Select(attrs={'class':'form-control form-control-sm'}),
+    }
