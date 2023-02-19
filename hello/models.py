@@ -24,7 +24,7 @@ class Friend(models.Model):
 class Message(models.Model):
   friend = models.ForeignKey(Friend, on_delete=models.CASCADE)
   title = models.CharField(max_length=100)
-  acontent = models.CharField(max_length=300)
+  content = models.CharField(max_length=300)
   pub_date = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
