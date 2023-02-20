@@ -104,3 +104,21 @@ def groups(request):
                                   {'groups':sel_group})
       friendsform = FriendsForm(request.user, friends=friends,\
                                 vals=[])
+
+    # GETアクセス時の処理
+    else:
+      # フォームの用意
+      groupsform = GroupSelectForm(request.user)
+      friendsform = FriendsForm(request.user, friends=friends, vals=[])
+      sel_group = '-'
+
+    # 共通処理
+    createform = CreateGroupForm()
+    params = {
+      'login_user':request.user,
+      'groups_form':groupsform,
+      'friends_form':friendsform,
+      'create_form':createform,
+      'group':sel_group,
+    }
+  return render(request, 'sns/groups.html', params)
