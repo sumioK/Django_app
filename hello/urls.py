@@ -14,4 +14,5 @@ urlpatterns = [
   path('check', views.check, name='check'),
   path('message/', views.message, name='message'),
   path('message/<int:page>', views.message, name='message'),
+  
 ]
