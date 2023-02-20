@@ -84,3 +84,23 @@ def groups(request):
       # チェックしたFriendsを取得
       sel_fds = request.POST.getlist('friends')
       # FriendsのUserを取得
+      sel_fds = request.POST.getlist('friends')
+      # FriendsのUserを取得
+      sel_users = User.objects.filter(username__in=sel_fds)
+      # Userおリストに含まれるユーザーが登録したFriendを取得
+      fds = Friend.objects.filter(owner=request.user)\
+        .filter(user__in=sel_users)
+      # すべてのFriendにGroupを設定し保存する
+      visit = []
+      for item in fds:
+        item.group = group_obj
+        item.seve()
+        visit.append(item.user.username)
+      # メッセージを設定
+      messages.success(request, 'チェックされたFriendを' +\
+        sel_group + 'に登録しました')
+      # フォームの用意
+      groupsform = GroupSelectForm(request.user, \
+                                  {'groups':sel_group})
+      friendsform = FriendsForm(request.user, friends=friends,\
+                                vals=[])
